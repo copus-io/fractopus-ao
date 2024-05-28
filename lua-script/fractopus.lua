@@ -1,16 +1,12 @@
-Handlers.add(
-  "ping",
-  Handlers.utils.hasMatchingData("ping"),
-  Handlers.utils.reply("pong")
-)
+local json = require("json")
+FractOpus = {}
 
+-- Send({Target=ao.id,Action="save",Tags={uri="www.baidu.com"}, Data="{'uri':'www.baidu.com'}"})
 Handlers.add(
-  "Info",
-  Handlers.utils.hasMatchingTag("Action","Info"),
-  function (msg)
-    ao.send({
-      Target =msg.From,
-      Name = Name,
-      Data = msg.Data
-    })
-  end)
+  "save",
+  Handlers.utils.hasMatchingTag("Action","save"),
+  function (message)
+    print(message.Data)
+    FractOpus[message.Tags.uri]=message.Data
+  end
+)
