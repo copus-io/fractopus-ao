@@ -27,15 +27,23 @@ Name = Name or 'Points Coin'
 Ticker = Ticker or 'PNTS'
 Logo = Logo or 'SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ-KY'
 
-Handlers.add('setName', Handlers.utils.hasMatchingTag('Action', 'setName'), function(msg)
-  Name = msg.Data;
-  print(Name);
+Handlers.add('setInfo', Handlers.utils.hasMatchingTag('Action', 'setInfo'), function(msg)
+  assert(msg.From == ao.id, 'You are not the admin!')
+  if string.len(msg.Tags.Name) > 0 then
+    Name = msg.Tags.Name;
+  end
+  if string.len(msg.Tags.Logo) > 0 then
+    Logo = msg.Tags.Logo;
+  end
+
+  local info = { name = Name, logo = Logo, denomination = tostring(Denomination) }
   ao.send({
     Target = msg.From,
     Name = Name,
     Ticker = Ticker,
     Logo = Logo,
-    Denomination = tostring(Denomination)
+    Denomination = tostring(Denomination),
+    Data = json.encode(info)
   })
 end)
 
@@ -104,7 +112,8 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
         Quantity = msg.Tags.Quantity,
         Data = Colors.gray ..
             msg.Tags.Sender .. " transferred " ..
-            Colors.blue .. msg.Tags.Quantity .. Colors.gray .. " to " .. Colors.green .. msg.Tags.Recipient .. Colors.reset
+            Colors.blue ..
+            msg.Tags.Quantity .. Colors.gray .. " to " .. Colors.green .. msg.Tags.Recipient .. Colors.reset
       }
 
       for tagName, tagValue in pairs(msg) do
@@ -161,7 +170,8 @@ end)
 
 Handlers.add('burn', Handlers.utils.hasMatchingTag('Action', 'Burn'), function(msg)
   assert(type(msg.Tags.Quantity) == 'string', 'Quantity is required!')
-  assert(bint(msg.Tags.Quantity) <= bint(Balances[msg.From]), 'Quantity must be less than or equal to the current balance!')
+  assert(bint(msg.Tags.Quantity) <= bint(Balances[msg.From]),
+    'Quantity must be less than or equal to the current balance!')
 
   Balances[msg.From] = utils.subtract(Balances[msg.From], msg.Tags.Quantity)
   TotalSupply = utils.subtract(TotalSupply, msg.Tags.Quantity)
