@@ -27,6 +27,7 @@ Name = Name or 'Points Coin'
 Ticker = Ticker or 'PNTS'
 Logo = Logo or 'SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ-KY'
 
+-- Send({Target=ao.id,Action="setInfo",Tags={Name="Drips1",Logo="SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ"}})
 Handlers.add('setInfo', Handlers.utils.hasMatchingTag('Action', 'setInfo'), function(msg)
   assert(msg.From == ao.id, 'You are not the admin!')
   if string.len(msg.Tags.Name) > 0 then
