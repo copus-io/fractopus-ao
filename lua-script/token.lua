@@ -106,29 +106,13 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
             msg.Tags.Sender .. " transferred " ..
             Colors.blue .. msg.Tags.Quantity .. Colors.gray .. " to " .. Colors.green .. msg.Tags.Recipient .. Colors.reset
       }
-      -- Credit-Notice message template, that is sent to the Recipient of the transfer
-      local creditNotice = {
-        Target = msg.Tags.Recipient,
-        Action = 'Credit-Notice',
-        Sender = msg.From,
-        Quantity = msg.Tags.Quantity,
-        Data = Colors.gray ..
-            "You received " ..
-            Colors.blue .. msg.Tags.Quantity .. Colors.gray .. " from " .. Colors.green .. msg.Tags.Sender .. Colors.reset
-      }
 
-      -- Add forwarded tags to the credit and debit notice messages
       for tagName, tagValue in pairs(msg) do
-        -- Tags beginning with "X-" are forwarded
         if string.sub(tagName, 1, 2) == "X-" then
           debitNotice[tagName] = tagValue
-          creditNotice[tagName] = tagValue
         end
       end
-
-      -- Send Debit-Notice and Credit-Notice
       ao.send(debitNotice)
-      ao.send(creditNotice)
     end
   else
     ao.send({
