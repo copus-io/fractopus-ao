@@ -163,7 +163,7 @@ Handlers.add('totalSupply', Handlers.utils.hasMatchingTag('Action', 'TotalSupply
 
   ao.send({
     Target = msg.From,
-    Action = 'Total-Supply',
+    Action = 'TotalSupplyResp',
     Data = TotalSupply,
     Ticker = Ticker
   })
