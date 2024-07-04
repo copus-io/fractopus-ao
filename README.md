@@ -8,8 +8,13 @@ https://cookbook_ao.g8way.io/
 ## 中文文档
 https://cookbook_ao.g8way.io/zh/index.html
 
+## sqlite的支持
+https://github.com/permaweb/aos-sqlite
+
 ## 上链信息
 https://www.ao.link/
+
+
 
 ## 创建进程
 https://cookbook_ao.g8way.io/zh/welcome/getting-started.html
