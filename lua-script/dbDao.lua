@@ -3,9 +3,15 @@ local sqlite3 = require("lsqlite3")
 DB = DB or sqlite3.open_memory()
 
 -- 不能用 AUTO_INCREMENT
+
+-- 删除表 Drop TABLE users;
 DB:exec [[
-  CREATE TABLE users ( id INTEGER PRIMARY KEY, email);
-  INSERT INTO users VALUES (NULL, 'Hello Lua');
+  Drop TABLE users;
+  CREATE TABLE users ( id INTEGER PRIMARY KEY, email VARCHAR(20), address VARCHAR(60));
+  INSERT INTO users VALUES (NULL, 'Hello Lua1',10);
+  INSERT INTO users VALUES (NULL, 'Hello Lua2',101);
+  INSERT INTO users VALUES (NULL, 'Hello Lua3',102);
+  INSERT INTO users VALUES (NULL, 'Hello Lua4',103);
 ]]
 
 

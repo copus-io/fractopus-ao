@@ -40,7 +40,7 @@ end)
 Handlers.add("allUser", Handlers.utils.hasMatchingTag("Action", "allUser"), function(msg)
   local t = {}
   for row in DB:nrows("SELECT * FROM users") do
-    table.insert(t, string.format("%s: %s", row.id, row.email))
+    table.insert(t, string.format("%s: %s %s", row.id, row.email,row.address))
   end
   print(table.concat(t, "\n"))
 end)
