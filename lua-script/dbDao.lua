@@ -2,11 +2,10 @@ local sqlite3 = require("lsqlite3")
 
 DB = DB or sqlite3.open_memory()
 
+-- 不能用 AUTO_INCREMENT
 DB:exec [[
-  CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT, 
-  email TEXT
-  );
+  CREATE TABLE users ( id INTEGER PRIMARY KEY, email);
+  INSERT INTO users VALUES (NULL, 'Hello Lua');
 ]]
 
 
@@ -15,4 +14,5 @@ DB:exec[[
   INSERT INTO test VALUES (NULL, 'Hello Lua');
   INSERT INTO test VALUES (NULL, 'Hello Sqlite3');
   INSERT INTO test VALUES (NULL, 'Hello ao!!!');
+  INSERT INTO test VALUES (NULL, 'Hello ao2!!!');
 ]]
