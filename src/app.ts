@@ -1,13 +1,18 @@
 
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
+import swaggerUi from 'swagger-ui-express';
+import { RegisterRoutes } from './routes';
 
 const app: Express = express();
-const port = 3000;
+const port = 3001;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World from TypeScript!');
+RegisterRoutes(app);
+
+
+app.use("/docs", swaggerUi.serve, async (_req: express.Request, res: express.Response) => {
+  return res.send(swaggerUi.generateHTML(await import('./swagger.json')));
 });
 
 app.listen(port, () => {
-  console.log(`服务器运行在 http://localhost:${port}`);
+  console.log(`server running: http://localhost:${port}`);
 });
