@@ -29,12 +29,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const routes_1 = require("./routes");
-const app = (0, express_1.default)();
-const port = 3001;
-(0, routes_1.RegisterRoutes)(app);
-app.use("/docs", swagger_ui_express_1.default.serve, async (_req, res) => {
-    return res.send(swagger_ui_express_1.default.generateHTML(await Promise.resolve().then(() => __importStar(require('./swagger.json')))));
-});
-app.listen(port, () => {
-    console.log(`server running: http://localhost:${port}`);
-});
+function start() {
+    const app = (0, express_1.default)();
+    const port = 3001;
+    (0, routes_1.RegisterRoutes)(app);
+    app.use("/docs", swagger_ui_express_1.default.serve, async (_req, res) => {
+        return res.send(swagger_ui_express_1.default.generateHTML(await Promise.resolve().then(() => __importStar(require('./swagger.json')))));
+    });
+    app.listen(port, () => {
+        console.log(`server running: http://localhost:${port}`);
+    });
+}
+start();
