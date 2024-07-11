@@ -4,6 +4,7 @@
 /build
 /test
 /aoconfig
+/.vscode
 
 # Logs
 logs
