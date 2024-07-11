@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
+import { AOController } from './controllers/ao.Controller';
 import { AppController } from './controllers/app.controller';
-import { CommonController } from './controllers/commonController';
 import { AOService } from './services/ao.service';
 import { AppService } from './services/app.service';
 
@@ -8,7 +8,7 @@ import { AppService } from './services/app.service';
   imports: [],
   controllers: [
     AppController,
-    CommonController],
+    AOController],
   providers: [
     AppService,
     AOService

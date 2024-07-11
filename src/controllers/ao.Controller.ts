@@ -4,7 +4,7 @@ import { AOService } from 'src/services/ao.service';
 
 @ApiTags('ao')
 @Controller("api/ao")
-export class CommonController {
+export class AOController {
 
   constructor(private readonly aoService: AOService) { }
 

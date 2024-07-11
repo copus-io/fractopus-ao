@@ -21,6 +21,7 @@ export class AOService {
     return this.signer;
   }
 
+  // https://cookbook_ao.g8way.io/zh/guides/aoconnect/sending-messages.html
   public async sendMsg(params?: string): Promise<string> {
     try {
       const signer = await this.getSigner();
