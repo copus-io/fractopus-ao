@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { CommonController } from './controllers/commonController';
+import { AOService } from './services/ao.service';
 import { AppService } from './services/app.service';
 
 @Module({
@@ -8,6 +9,9 @@ import { AppService } from './services/app.service';
   controllers: [
     AppController,
     CommonController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    AOService
+  ],
 })
 export class AppModule {}

@@ -1,19 +1,18 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AppService } from '../services/app.service';
+import { Controller, Get } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AOService } from 'src/services/ao.service';
 
-@ApiTags('test2')
-@Controller("api/v1")
+@ApiTags('ao')
+@Controller("api/ao")
 export class CommonController {
 
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly aoService: AOService) { }
 
-  @Get("hello2")
-  @ApiOperation({ summary: 'Get hello message', description: 'Returns a greeting message' })
+  @Get("sendMsg")
+  @ApiOperation({ summary: 'sendMsg', description: 'Returns sendMsg' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  @ApiQuery({ name: 'name', required: false, description: 'Name of the person to greet' })
-  getHello(@Query('name') name?: string): string {
-    console.log(name);
-    return this.appService.getHello(name);
+  async sendMsg(): Promise<string> {
+    const resp = await this.aoService.sendMsg()
+    return resp;
   }
 }
