@@ -7,7 +7,7 @@ export class AOService {
 
   private signer: ReturnType<typeof createDataItemSigner> | null = null;
 
-  public async getSigner() {
+  private async getSigner() {
     if (!this.signer) {
       try {
         const walletData = await readFile('./aoconfig/wallet.json', 'utf8');
