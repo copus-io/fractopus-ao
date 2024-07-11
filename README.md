@@ -71,3 +71,16 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+
+
+## create project
+pnpm i -g @nestjs/cli
+
+nest new fractopus-ao
+
+支持swagger的文档生成
+pnpm install @nestjs/swagger swagger-ui-express 
+
+

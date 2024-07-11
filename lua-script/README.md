@@ -14,6 +14,9 @@ https://github.com/permaweb/aos-sqlite
 ## 上链信息
 https://www.ao.link/
 
+## ao Connect
+
+https://www.npmjs.com/package/@permaweb/aoconnect
 
 
 ## 创建进程
