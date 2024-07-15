@@ -7,6 +7,8 @@ export class AOService {
 
   private signer: ReturnType<typeof createDataItemSigner> | null = null;
 
+  private config :any| null = null;
+
   private async getSigner() {
     if (!this.signer) {
       try {
@@ -21,12 +23,26 @@ export class AOService {
     return this.signer;
   }
 
+  private async loadConfig() {
+    if(!this.config){
+      try {
+        const rawData = await readFile('./config/config.json', 'utf8');
+        this.config = JSON.parse(rawData);
+      } catch (error) {
+        console.error('Error loading config:', error);
+        process.exit(1);  
+      }
+    }
+    return this.config;
+  }
+
   // https://cookbook_ao.g8way.io/zh/guides/aoconnect/sending-messages.html
   public async sendMsg(params?: string): Promise<string> {
     try {
       const signer = await this.getSigner();
+      const config = await this.loadConfig();
       const resp = await message({
-        process: "dw_ydtYImkts_pMP-ZqraOTxJ-RnUd9_-39lYz8OnpY",
+        process: config.process.id1,
         tags: [
           { name: "Action", value: "hello" }
         ],
