@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AOController } from './controllers/ao.Controller';
-import { AppController } from './controllers/app.controller';
+import { AOController } from './controllers/ao.controller';
+import { HelloController } from './controllers/hello.controller';
 import { AOService } from './services/ao.service';
-import { AppService } from './services/app.service';
+import { HelloService } from './services/hello.service';
 
 @Module({
   imports: [],
   controllers: [
-    AppController,
-    AOController],
+    HelloController,
+    AOController
+  ],
   providers: [
-    AppService,
+    HelloService,
     AOService
   ],
 })
