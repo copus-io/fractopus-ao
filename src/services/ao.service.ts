@@ -37,15 +37,16 @@ export class AOService {
   }
 
   // https://cookbook_ao.g8way.io/zh/guides/aoconnect/sending-messages.html
-  public async sendMsg(action?:string, params?: string): Promise<string> {
+  public async sendMsg(tags?:{
+    name: string;
+    value: any;
+}[], params?: string): Promise<string> {
     try {
       const signer = await AOService.getSigner();
       const config = await this.loadConfig();
       const resp = await message({
         process: config.process.tokenDrip,
-        tags: [
-          { name: "Action", value: action||"hello"},
-        ],
+        tags: tags,
         signer: signer,
         data: params || "",
       });

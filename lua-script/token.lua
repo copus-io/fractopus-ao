@@ -139,10 +139,20 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
   assert(bint(0) < bint(msg.Tags.Quantity), 'Quantity must be greater than zero!')
 
   if not Balances[ao.id] then Balances[ao.id] = "0" end
+  
 
-  if msg.From == ao.id then
+  print(bint(msg.Tags.Quantity))
+  print(msg.From);
+  print(ao.id);
+  print(Owner);
+  print(msg.Data);
+  print(msg.Tags);
+
+  if msg.From == ao.id or msg.From== Owner then
     -- Add tokens to the token pool, according to Quantity
-    Balances[msg.From] = utils.add(Balances[msg.From], msg.Tags.Quantity)
+    if not Balances[msg.TargetUser] then Balances[msg.TargetUser] = "0" end
+    
+    Balances[msg.TargetUser] = utils.add(Balances[msg.TargetUser], msg.Tags.Quantity)
     TotalSupply = utils.add(TotalSupply, msg.Tags.Quantity)
     ao.send({
       Target = msg.From,
@@ -182,3 +192,4 @@ Handlers.add('burn', Handlers.utils.hasMatchingTag('Action', 'Burn'), function(m
     Data = Colors.gray .. "Successfully burned " .. Colors.blue .. msg.Tags.Quantity .. Colors.reset
   })
 end)
+
