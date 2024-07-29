@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AOService } from 'src/services/ao.service';
 
 @ApiTags('ao')
@@ -10,9 +10,14 @@ export class AOController {
 
   @Get("sendMsg")
   @ApiOperation({ summary: 'sendMsg', description: 'Returns sendMsg' })
+  @ApiQuery({ name: 'data', required: false, description: 'data' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  async sendMsg(): Promise<string> {
-    const resp = await this.aoService.sendMsg();
+  async sendMsg(@Query('data') data:string): Promise<string> {
+    const obj = {
+      data: data || "",
+    };
+    const jsonString = JSON.stringify(obj);
+    const resp = await this.aoService.sendMsg("ping",jsonString);
     return resp;
   }
 }

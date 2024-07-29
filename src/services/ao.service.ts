@@ -5,11 +5,11 @@ import { readFile } from "node:fs/promises";
 @Injectable()
 export class AOService {
 
-  private signer: ReturnType<typeof createDataItemSigner> | null = null;
+  private static signer: ReturnType<typeof createDataItemSigner> | null = null;
 
   private config :any| null = null;
 
-  private async getSigner() {
+  public static async getSigner() {
     if (!this.signer) {
       try {
         const walletData = await readFile('./aoconfig/wallet.json', 'utf8');
@@ -17,13 +17,13 @@ export class AOService {
         this.signer = createDataItemSigner(wallet);
       } catch (error) {
         console.error('Error initializing signer:', error);
-        throw new Error('Failed to initialize signer');
+        process.exit(1);  
       }
     }
     return this.signer;
   }
 
-  private async loadConfig() {
+  public async loadConfig() {
     if(!this.config){
       try {
         const rawData = await readFile('./config/config.json', 'utf8');
@@ -37,14 +37,14 @@ export class AOService {
   }
 
   // https://cookbook_ao.g8way.io/zh/guides/aoconnect/sending-messages.html
-  public async sendMsg(params?: string): Promise<string> {
+  public async sendMsg(action?:string, params?: string): Promise<string> {
     try {
-      const signer = await this.getSigner();
+      const signer = await AOService.getSigner();
       const config = await this.loadConfig();
       const resp = await message({
-        process: config.process.id1,
+        process: config.process.tokenDrip,
         tags: [
-          { name: "Action", value: "hello" }
+          { name: "Action", value: action||"hello"},
         ],
         signer: signer,
         data: params || "",
@@ -52,7 +52,6 @@ export class AOService {
       return resp;
     } catch (error) {
       console.error('Error sending message:', error);
-      throw new Error('Failed to send message');
     }
   }
 }
