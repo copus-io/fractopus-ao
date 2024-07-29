@@ -140,18 +140,10 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
 
   if not Balances[ao.id] then Balances[ao.id] = "0" end
   
-
-  print(bint(msg.Tags.Quantity))
-  print(msg.From);
-  print(ao.id);
-  print(Owner);
-  print(msg.Data);
-  print(msg.Tags);
-
   if msg.From == ao.id or msg.From== Owner then
     -- Add tokens to the token pool, according to Quantity
     if not Balances[msg.TargetUser] then Balances[msg.TargetUser] = "0" end
-    
+
     Balances[msg.TargetUser] = utils.add(Balances[msg.TargetUser], msg.Tags.Quantity)
     TotalSupply = utils.add(TotalSupply, msg.Tags.Quantity)
     ao.send({
