@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { createDataItemSigner, message } from "@permaweb/aoconnect";
+import { createDataItemSigner, dryrun, message, result } from "@permaweb/aoconnect";
 import { readFile } from "node:fs/promises";
 
 @Injectable()
@@ -23,7 +23,7 @@ export class AOService {
     return this.signer;
   }
 
-  public async loadConfig() {
+  private async loadConfig() {
     if(!this.config){
       try {
         const rawData = await readFile('./config/config.json', 'utf8');
@@ -52,6 +52,37 @@ export class AOService {
       return resp;
     } catch (error) {
       console.error('Error sending message:', error);
+    }
+  }
+
+  // https://cookbook_ao.g8way.io/zh/guides/aoconnect/reading-results.html
+  public async readMsg(messageId:string): Promise<any> {
+    try {
+      const config = await this.loadConfig();
+      const resp = await result({
+        process: config.process.tokenDrip,
+        message: messageId,
+      });
+      return resp
+    } catch (error) {
+      console.error('Error read message:', error);
+    }
+  }
+
+
+  // https://cookbook_ao.g8way.io/zh/guides/aoconnect/calling-dryrun.html
+  public async dryrun(action:string): Promise<any> {
+    try {
+      const config = await this.loadConfig();
+      const resp = await dryrun({
+        process: config.process.tokenDrip,
+        tags: [
+          { name: "Action", value: action},
+        ],
+      });
+      return resp
+    } catch (error) {
+      console.error('Error dryrun message:', error);
     }
   }
 }
