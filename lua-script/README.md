@@ -25,6 +25,8 @@ https://cookbook_ao.g8way.io/zh/welcome/getting-started.html
 
 https://www.ao.link/entity/71ivTXF52qh2n0cllK1RkgeWWPu3FNr9MTJ-QnhGmTE
 
-
 ## blueprint token
 https://github.com/permaweb/aos/blob/main/blueprints/token.lua
+
+## 编辑器设置
+https://cookbook_ao.g8way.io/zh/references/editor-setup.html

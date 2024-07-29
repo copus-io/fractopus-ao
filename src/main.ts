@@ -9,11 +9,12 @@ async function bootstrap() {
     .setTitle('FractOpus API')
     .setDescription('The NestJS API description')
     .setVersion('1.0')
-    .addTag('FractOpus')
+    .addTag('Fractopus')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+  // http://localhost:3000/doc.html
+  SwaggerModule.setup('doc.html', app, document);
 
   await app.listen(3000);
 }
