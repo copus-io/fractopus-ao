@@ -40,23 +40,6 @@ export class AOController {
     return resp;
   }
 
-  @Post("sendMsg")
-  @ApiOperation({ summary: 'sendMsg', description: 'Returns sendMsg' })
-  @ApiQuery({ name: 'action', required: false, description: 'action' })
-  @ApiQuery({ name: 'data', required: false, description: 'data' })
-  @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async sendMsg(@Query('action') action: string, @Query('data') data: string): Promise<string> {
-    const obj = {
-      data: data || "",
-    };
-    const jsonString = JSON.stringify(obj);
-    const tags = [
-      { name: "Action", value: action || "hello" },
-    ];
-    const resp = await this.aoService.sendMsg(tags, jsonString);
-    return resp;
-  }
-
 
   @Get("readMsg")
   @ApiOperation({ summary: 'readMsg', description: 'Returns msg' })

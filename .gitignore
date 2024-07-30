@@ -5,6 +5,8 @@
 /test
 /aoconfig
 /.vscode
+/dist
+/dist.rar
 
 # Logs
 logs
