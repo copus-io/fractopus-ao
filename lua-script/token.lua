@@ -109,6 +109,7 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
       local debitNotice = {
         Target = msg.From,
         Action = 'Debit-Notice',
+        Sender = msg.Tags.Sender,
         Recipient = msg.Tags.Recipient,
         Quantity = msg.Tags.Quantity,
         Data = Colors.gray ..
@@ -142,12 +143,12 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
   
   if msg.From == ao.id or msg.From== Owner then
     -- Add tokens to the token pool, according to Quantity
-    if not Balances[msg.Recipient] then Balances[msg.Recipient] = "0" end
-    Balances[msg.Recipient] = utils.add(Balances[msg.Recipient], msg.Tags.Quantity)
+    if not Balances[msg.Tags.Recipient] then Balances[msg.Tags.Recipient] = "0" end
+    Balances[msg.Tags.Recipient] = utils.add(Balances[msg.Tags.Recipient], msg.Tags.Quantity)
     TotalSupply = utils.add(TotalSupply, msg.Tags.Quantity)
     ao.send({
       Target = msg.From,
-      Data = Colors.gray .. "Successfully minted " .. Colors.blue .. msg.Tags.Quantity .. Colors.reset
+      Data = Colors.gray .. "Successfully minted " .. Colors.blue .. msg.Tags.Recipient .. msg.Tags.Quantity .. Colors.reset
     })
   else
     ao.send({
@@ -171,16 +172,17 @@ Handlers.add('totalSupply', Handlers.utils.hasMatchingTag('Action', 'TotalSupply
 end)
 
 Handlers.add('burn', Handlers.utils.hasMatchingTag('Action', 'Burn'), function(msg)
+  assert(msg.From == ao.id or msg.From == Owner, 'You are not the admin!')
   assert(type(msg.Tags.Quantity) == 'string', 'Quantity is required!')
-  assert(bint(msg.Tags.Quantity) <= bint(Balances[msg.From]),
+  assert(bint(msg.Tags.Quantity) <= bint(Balances[msg.Tags.TargetUser]),
     'Quantity must be less than or equal to the current balance!')
 
-  Balances[msg.From] = utils.subtract(Balances[msg.From], msg.Tags.Quantity)
+  Balances[msg.Tags.TargetUser] = utils.subtract(Balances[msg.Tags.TargetUser], msg.Tags.Quantity)
   TotalSupply = utils.subtract(TotalSupply, msg.Tags.Quantity)
 
   ao.send({
     Target = msg.From,
-    Data = Colors.gray .. "Successfully burned " .. Colors.blue .. msg.Tags.Quantity .. Colors.reset
+    Data = Colors.gray .. "Successfully burned " .. Colors.blue .. msg.Tags.TargetUser .. msg.Tags.Quantity .. Colors.reset
   })
 end)
 

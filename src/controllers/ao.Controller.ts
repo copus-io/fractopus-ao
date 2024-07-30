@@ -9,14 +9,14 @@ export class AOController {
 
   constructor(private readonly aoService: AOService, private readonly dripService: DripService) { }
 
-  @Post("dripTransfer")
+  @Post("transferDrip")
   @ApiOperation({ summary: 'dripTransfer', description: 'Returns dripTransfer msgId' })
   @ApiQuery({ name: 'sender', required: false, description: 'sender' })
   @ApiQuery({ name: 'recipient', required: false, description: 'recipient' })
   @ApiQuery({ name: 'amount', required: false, description: 'amount' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async dripTransfer(@Query('sender') sender: string,@Query('recipient') recipient: string, @Query('amount') amount: number): Promise<string> {
-    const resp = await this.dripService.dripTransfer(sender,recipient, amount);
+  public async transferDrip(@Query('sender') sender: string,@Query('recipient') recipient: string, @Query('amount') amount: number): Promise<string> {
+    const resp = await this.dripService.transferDrip(sender,recipient, amount);
     return resp;
   }
 
@@ -27,6 +27,16 @@ export class AOController {
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async mintDrip(@Query('recipient') recipient: string, @Query('amount') amount: number): Promise<string> {
     const resp = await this.dripService.mintDrip(recipient, amount);
+    return resp;
+  }
+  
+  @Post("burnDrip")
+  @ApiOperation({ summary: 'burnDrip', description: 'Returns burnDrip msgId' })
+  @ApiQuery({ name: 'targetUser', required: false, description: 'targetUser' })
+  @ApiQuery({ name: 'amount', required: false, description: 'amount' })
+  @ApiResponse({ status: 200, description: 'Successful response', type: String })
+  public async burnDrip(@Query('targetUser') targetUser: string, @Query('amount') amount: number): Promise<string> {
+    const resp = await this.dripService.burnDrip(targetUser, amount);
     return resp;
   }
 

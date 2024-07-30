@@ -11,17 +11,26 @@ export class DripService {
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
     ];
+    return this.aoService.sendMsg(tags)
+  }
+
+  public async burnDrip(targetUser: string, amount: number) {
+    const tags = [
+      { name: "Action", value: "Burn" },
+      { name: "TargetUser", value: targetUser.trim()},
+      { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
+    ];
     console.info(tags);
     return this.aoService.sendMsg(tags)
   }
-  public async dripTransfer(sender: string,recipient: string, amount: number) {
+
+  public async transferDrip(sender: string,recipient: string, amount: number) {
     const tags = [
       { name: "Action", value: "Transfer" },
       { name: "Sender", value: sender },
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
     ];
-    console.info(tags);
     return this.aoService.sendMsg(tags)
   }
 }
