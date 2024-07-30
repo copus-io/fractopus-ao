@@ -72,7 +72,7 @@ export class AOService {
 
 
   // https://cookbook_ao.g8way.io/zh/guides/aoconnect/calling-dryrun.html
-  public async dryrun(action:string): Promise<any> {
+  public async dryRun(action:string): Promise<any> {
     try {
       const config = await this.loadConfig();
       const resp = await dryrun({
@@ -83,7 +83,23 @@ export class AOService {
       });
       return resp
     } catch (error) {
-      console.error('Error dryrun message:', error);
+      console.error('Error dryRun message:', error);
+    }
+  }
+  
+  public async dryRunByTags(tags?:{
+    name: string;
+    value: any;
+}[]): Promise<any> {
+    try {
+      const config = await this.loadConfig();
+      const resp = await dryrun({
+        process: config.process.tokenDrip,
+        tags: tags,
+      });
+      return resp
+    } catch (error) {
+      console.error('Error dryRunByTags message:', error);
     }
   }
 }

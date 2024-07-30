@@ -68,13 +68,22 @@ export class AOController {
     return resp;
   }
 
+  @Get("balanceOfUser")
+  @ApiOperation({ summary: 'balanceOfUser', description: 'Returns msg' })
+  @ApiQuery({ name: 'userUUID', required: false, description: 'user uuid' })
+  @ApiResponse({ status: 200, description: 'Successful response', type: String })
+  public async balanceOfUser(@Query('userUUID') userUUID: string): Promise<string> {
+    const resp = await this.dripService.balance(userUUID);
+    return resp;
+  }
 
-  @Get("readMsgByDryrun")
-  @ApiOperation({ summary: 'readMsgByDryrun', description: 'Returns msg by dryrun action' })
+
+  @Get("readMsgByDryRun")
+  @ApiOperation({ summary: 'readMsgByDryRun', description: 'Returns msg by dryrun action' })
   @ApiQuery({ name: 'action', required: false, description: 'action' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async readMsgByDryrun(@Query('action') action: string): Promise<string> {
-    const resp = await this.aoService.dryrun(action);
+  public async readMsgByDryRun(@Query('action') action: string): Promise<string> {
+    const resp = await this.aoService.dryRun(action);
     return resp;
   }
 }

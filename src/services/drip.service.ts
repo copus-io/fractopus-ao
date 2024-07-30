@@ -32,5 +32,14 @@ export class DripService {
       { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
     ];
     return this.aoService.sendMsg(tags)
+    // return this.aoService.dryRunByTags(tags)
+  }
+
+  public async balance(recipient: string) {
+    const tags = [
+      { name: "Action", value: "Balance" },
+      { name: "Recipient", value: recipient },
+    ];
+    return this.aoService.dryRunByTags(tags)
   }
 }
