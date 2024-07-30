@@ -39,7 +39,7 @@ Handlers.add('setInfo', Handlers.utils.hasMatchingTag('Action', 'setInfo'), func
 
   local info = { name = Name, logo = Logo, denomination = tostring(Denomination) }
   ao.send({
-    Target = msg.From,
+    Target = ao.id,
     Name = Name,
     Ticker = Ticker,
     Logo = Logo,
@@ -58,7 +58,7 @@ end)
 
 Handlers.add('info', Handlers.utils.hasMatchingTag('Action', 'Info'), function(msg)
   ao.send({
-    Target = msg.From,
+    Target = ao.id,
     Name = Name,
     Ticker = Ticker,
     Logo = Logo,
@@ -80,7 +80,7 @@ Handlers.add('balance', Handlers.utils.hasMatchingTag('Action', 'Balance'), func
   end
 
   ao.send({
-    Target = msg.From,
+    Target = ao.id,
     Balance = bal,
     Ticker = Ticker,
     Account = msg.Tags.Recipient or msg.From,
@@ -89,7 +89,7 @@ Handlers.add('balance', Handlers.utils.hasMatchingTag('Action', 'Balance'), func
 end)
 
 Handlers.add('balances', Handlers.utils.hasMatchingTag('Action', 'Balances'),
-  function(msg) ao.send({ Target = msg.From, Data = json.encode(Balances) }) end)
+  function(msg) ao.send({ Target = ao.id, Data = json.encode(Balances) }) end)
 
 Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), function(msg)
   assert(type(msg.Tags.Sender) == 'string', 'Sender is required!')
@@ -127,7 +127,7 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
     end
   else
     ao.send({
-      Target = msg.From,
+      Target = ao.id,
       Action = 'Transfer-Error',
       ['Message-Id'] = msg.Id,
       Error = 'Insufficient Balance!'
@@ -147,12 +147,12 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
     Balances[msg.Tags.Recipient] = utils.add(Balances[msg.Tags.Recipient], msg.Tags.Quantity)
     TotalSupply = utils.add(TotalSupply, msg.Tags.Quantity)
     ao.send({
-      Target = msg.From,
+      Target = ao.id,
       Data = Colors.gray .. "Successfully minted " .. Colors.blue .. msg.Tags.Recipient .. msg.Tags.Quantity .. Colors.reset
     })
   else
     ao.send({
-      Target = msg.From,
+      Target = ao.id,
       Action = 'Mint-Error',
       ['Message-Id'] = msg.Id,
       Error = 'Only the Process Id can mint new ' .. Ticker .. ' tokens!'
@@ -164,7 +164,7 @@ Handlers.add('totalSupply', Handlers.utils.hasMatchingTag('Action', 'TotalSupply
   assert(msg.From ~= ao.id, 'Cannot call Total-Supply from the same process!')
 
   ao.send({
-    Target = msg.From,
+    Target = ao.id,
     Action = 'TotalSupplyResp',
     Data = TotalSupply,
     Ticker = Ticker
@@ -181,7 +181,7 @@ Handlers.add('burn', Handlers.utils.hasMatchingTag('Action', 'Burn'), function(m
   TotalSupply = utils.subtract(TotalSupply, msg.Tags.Quantity)
 
   ao.send({
-    Target = msg.From,
+    Target = ao.id,
     Data = Colors.gray .. "Successfully burned " .. Colors.blue .. msg.Tags.TargetUser .. msg.Tags.Quantity .. Colors.reset
   })
 end)

@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AOService } from 'src/services/ao.service';
 import { DripService } from 'src/services/drip.service';
+import { DripBurn } from 'src/vo/drip.burn';
+import { DripMint } from 'src/vo/drip.mint';
+import { DripTransfer } from 'src/vo/drip.transfer';
 
 @ApiTags('ao')
 @Controller("api/ao")
@@ -11,32 +14,30 @@ export class AOController {
 
   @Post("transferDrip")
   @ApiOperation({ summary: 'dripTransfer', description: 'Returns dripTransfer msgId' })
-  @ApiQuery({ name: 'sender', required: false, description: 'sender' })
-  @ApiQuery({ name: 'recipient', required: false, description: 'recipient' })
-  @ApiQuery({ name: 'amount', required: false, description: 'amount' })
+  @ApiBody({ type: DripTransfer })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async transferDrip(@Query('sender') sender: string,@Query('recipient') recipient: string, @Query('amount') amount: number): Promise<string> {
-    const resp = await this.dripService.transferDrip(sender,recipient, amount);
+  public async transferDrip(@Body() req: DripTransfer): Promise<string> {
+    const resp = await this.dripService.transferDrip(req.sender, req.recipient, req.amount);
     return resp;
   }
 
   @Post("mintDrip")
   @ApiOperation({ summary: 'mintDrip', description: 'Returns mintDrip msgId' })
-  @ApiQuery({ name: 'recipient', required: false, description: 'recipient' })
+  @ApiBody({ type: DripMint })
   @ApiQuery({ name: 'amount', required: false, description: 'amount' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async mintDrip(@Query('recipient') recipient: string, @Query('amount') amount: number): Promise<string> {
-    const resp = await this.dripService.mintDrip(recipient, amount);
+  public async mintDrip(@Body() req: DripMint): Promise<string> {
+    const resp = await this.dripService.mintDrip(req.recipient, req.amount);
+    console.info(resp);
     return resp;
   }
-  
+
   @Post("burnDrip")
   @ApiOperation({ summary: 'burnDrip', description: 'Returns burnDrip msgId' })
-  @ApiQuery({ name: 'targetUser', required: false, description: 'targetUser' })
-  @ApiQuery({ name: 'amount', required: false, description: 'amount' })
+  @ApiBody({ type: DripBurn })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async burnDrip(@Query('targetUser') targetUser: string, @Query('amount') amount: number): Promise<string> {
-    const resp = await this.dripService.burnDrip(targetUser, amount);
+  public async burnDrip(@Body() req: DripBurn): Promise<string> {
+    const resp = await this.dripService.burnDrip(req.targetUser, req.amount);
     return resp;
   }
 

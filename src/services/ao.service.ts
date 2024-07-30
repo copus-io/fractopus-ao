@@ -52,6 +52,7 @@ export class AOService {
         signer: signer,
         data: params || "",
       });
+      console.info(resp);
       return resp;
     } catch (error) {
       console.error('Error sending message:', error);

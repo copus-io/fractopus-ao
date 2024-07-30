@@ -11,6 +11,7 @@ export class DripService {
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
     ];
+    console.info(tags);
     return this.aoService.sendMsg(tags)
   }
 
