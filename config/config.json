@@ -1,4 +1,5 @@
 {
+  "walletPath":"./aoconfig/wallet.json",
   "process": {
     "tokenDrip": "dpoMmQnp2wXTbNZmAty7X1R1xOlD4RvIjRwXF6qnpm0" 
   }

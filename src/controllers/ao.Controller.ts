@@ -58,7 +58,6 @@ export class AOController {
   }
 
 
-
   @Get("readMsg")
   @ApiOperation({ summary: 'readMsg', description: 'Returns msg' })
   @ApiQuery({ name: 'messageId', required: false, description: 'messageId' })
