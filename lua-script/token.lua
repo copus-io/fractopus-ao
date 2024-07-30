@@ -20,12 +20,12 @@ local utils = {
 
 Variant = "0.0.3"
 
-Denomination = Denomination or 12
-Balances = Balances or { [ao.id] = utils.toBalanceValue(10000 * 10 ^ Denomination) }
-TotalSupply = TotalSupply or utils.toBalanceValue(10000 * 10 ^ Denomination)
+Denomination = Denomination or 6
+Balances = Balances or { [ao.id] = utils.toBalanceValue(0 * 10 ^ Denomination) }
+TotalSupply = TotalSupply or utils.toBalanceValue(0 * 10 ^ Denomination)
 Name = Name or 'Drip Coin'
 Ticker = Ticker or 'Drip'
-Logo = Logo or 'SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ-KY'
+Logo = Logo or '5TT1cnh-fMnLOKSY4oZpqCdVjLCOXLKJUlUzrOw6GQ8'
 
 -- Send({Target=ao.id,Action="setInfo",Tags={Name="Drips1",Logo="SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ"}})
 Handlers.add('setInfo', Handlers.utils.hasMatchingTag('Action', 'setInfo'), function(msg)
@@ -96,7 +96,7 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
   assert(type(msg.Tags.Recipient) == 'string', 'Recipient is required!')
   assert(type(msg.Tags.Quantity) == 'string', 'Quantity is required!')
   assert(bint.__lt(0, bint(msg.Tags.Quantity)), 'Quantity must be greater than 0')
-  assert(msg.From == ao.id, 'You are not the admin!')
+  assert(msg.From == ao.id or msg.From == Owner, 'You are not the admin!')
 
   if not Balances[msg.Tags.Sender] then Balances[msg.Tags.Sender] = "0" end
   if not Balances[msg.Tags.Recipient] then Balances[msg.Tags.Recipient] = "0" end
@@ -142,9 +142,8 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
   
   if msg.From == ao.id or msg.From== Owner then
     -- Add tokens to the token pool, according to Quantity
-    if not Balances[msg.TargetUser] then Balances[msg.TargetUser] = "0" end
-
-    Balances[msg.TargetUser] = utils.add(Balances[msg.TargetUser], msg.Tags.Quantity)
+    if not Balances[msg.Recipient] then Balances[msg.Recipient] = "0" end
+    Balances[msg.Recipient] = utils.add(Balances[msg.Recipient], msg.Tags.Quantity)
     TotalSupply = utils.add(TotalSupply, msg.Tags.Quantity)
     ao.send({
       Target = msg.From,

@@ -7,15 +7,26 @@ import { DripService } from 'src/services/drip.service';
 @Controller("api/ao")
 export class AOController {
 
-  constructor(private readonly aoService: AOService,private readonly dripService: DripService) { }
+  constructor(private readonly aoService: AOService, private readonly dripService: DripService) { }
+
+  @Post("dripTransfer")
+  @ApiOperation({ summary: 'dripTransfer', description: 'Returns dripTransfer msgId' })
+  @ApiQuery({ name: 'sender', required: false, description: 'sender' })
+  @ApiQuery({ name: 'recipient', required: false, description: 'recipient' })
+  @ApiQuery({ name: 'amount', required: false, description: 'amount' })
+  @ApiResponse({ status: 200, description: 'Successful response', type: String })
+  public async dripTransfer(@Query('sender') sender: string,@Query('recipient') recipient: string, @Query('amount') amount: number): Promise<string> {
+    const resp = await this.dripService.dripTransfer(sender,recipient, amount);
+    return resp;
+  }
 
   @Post("mintDrip")
   @ApiOperation({ summary: 'mintDrip', description: 'Returns mintDrip msgId' })
-  @ApiQuery({ name: 'targetUser', required: false, description: 'targetUser' })
+  @ApiQuery({ name: 'recipient', required: false, description: 'recipient' })
   @ApiQuery({ name: 'amount', required: false, description: 'amount' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async mintDrip(@Query('targetUser') targetUser:string,@Query('amount') amount:number): Promise<string> {
-    const resp = await this.dripService.mintDrip(targetUser,amount);
+  public async mintDrip(@Query('recipient') recipient: string, @Query('amount') amount: number): Promise<string> {
+    const resp = await this.dripService.mintDrip(recipient, amount);
     return resp;
   }
 
@@ -24,25 +35,25 @@ export class AOController {
   @ApiQuery({ name: 'action', required: false, description: 'action' })
   @ApiQuery({ name: 'data', required: false, description: 'data' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async sendMsg(@Query('action') action:string,@Query('data') data:string): Promise<string> {
+  public async sendMsg(@Query('action') action: string, @Query('data') data: string): Promise<string> {
     const obj = {
       data: data || "",
     };
     const jsonString = JSON.stringify(obj);
     const tags = [
-      { name: "Action", value: action||"hello"},
+      { name: "Action", value: action || "hello" },
     ];
-    const resp = await this.aoService.sendMsg(tags,jsonString);
+    const resp = await this.aoService.sendMsg(tags, jsonString);
     return resp;
   }
-  
+
 
 
   @Get("readMsg")
   @ApiOperation({ summary: 'readMsg', description: 'Returns msg' })
   @ApiQuery({ name: 'messageId', required: false, description: 'messageId' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async readMsg(@Query('messageId') messageId:string): Promise<string> {
+  public async readMsg(@Query('messageId') messageId: string): Promise<string> {
     const resp = await this.aoService.readMsg(messageId);
     return resp;
   }
@@ -52,7 +63,7 @@ export class AOController {
   @ApiOperation({ summary: 'readMsgByDryrun', description: 'Returns msg by dryrun action' })
   @ApiQuery({ name: 'action', required: false, description: 'action' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async readMsgByDryrun(@Query('action') action:string): Promise<string> {
+  public async readMsgByDryrun(@Query('action') action: string): Promise<string> {
     const resp = await this.aoService.dryrun(action);
     return resp;
   }
