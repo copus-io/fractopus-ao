@@ -1,6 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { createDataItemSigner, dryrun, message, result } from "@permaweb/aoconnect";
+import { connect, createDataItemSigner } from "@permaweb/aoconnect";
 import { readFile } from "node:fs/promises";
+
+// https://cookbook_ao.g8way.io/zh/guides/aoconnect/connecting.html
+// https://viewblock.io/arweave/gateways
+const { result,  message,  dryrun } = connect(
+  {
+    MU_URL: "https://mu.ao-testnet.xyz",
+    CU_URL: "https://cu.ao-testnet.xyz",
+    GATEWAY_URL: "https://ar-io.dev",
+  },
+);
 
 @Injectable()
 export class AOService {
