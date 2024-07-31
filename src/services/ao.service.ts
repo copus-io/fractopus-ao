@@ -51,8 +51,7 @@ export class AOService {
         signer: signer,
         data: params || "",
       });
-      console.info(tags,params);
-      console.info(resp);
+      console.info("sendMsg",tags,params,resp);
       return resp;
     } catch (error) {
       console.error('Error sending message:', error);
@@ -67,7 +66,8 @@ export class AOService {
         process: config.process.tokenDrip,
         message: messageId,
       });
-      return resp
+      console.info("readMsg",messageId,resp);
+      return resp;
     } catch (error) {
       console.error('Error read message:', error);
     }
@@ -84,7 +84,8 @@ export class AOService {
           { name: "Action", value: action},
         ],
       });
-      return resp
+      console.info("dryRun",action,resp);
+      return resp;
     } catch (error) {
       console.error('Error dryRun message:', error);
     }
@@ -100,6 +101,7 @@ export class AOService {
         process: config.process.tokenDrip,
         tags: tags,
       });
+      console.info(tags,resp);;
       return resp
     } catch (error) {
       console.error('Error dryRunByTags message:', error);

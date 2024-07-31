@@ -2,7 +2,6 @@ local bint = require('.bint')(256)
 local ao = require('ao')
 local json = require('json')
 
-
 local utils = {
   add = function(a, b)
     return tostring(bint(a) + bint(b))
@@ -21,10 +20,15 @@ local utils = {
 Variant = "0.0.3"
 
 Denomination = Denomination or 6
+
 Balances = Balances or { [ao.id] = utils.toBalanceValue(0 * 10 ^ Denomination) }
+
 TotalSupply = TotalSupply or utils.toBalanceValue(0 * 10 ^ Denomination)
+
 Name = Name or 'Drip Coin'
+
 Ticker = Ticker or 'Drip'
+
 Logo = Logo or '5TT1cnh-fMnLOKSY4oZpqCdVjLCOXLKJUlUzrOw6GQ8'
 
 -- Send({Target=ao.id,Action="setInfo",Tags={Name="Drips1",Logo="SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ"}})
@@ -46,12 +50,6 @@ Handlers.add('setInfo', Handlers.utils.hasMatchingTag('Action', 'setInfo'), func
     Denomination = tostring(Denomination),
     Data = json.encode(info)
   })
-end)
-
-Handlers.add('test', Handlers.utils.hasMatchingTag('Action', 'test'), function(msg)
-  print(msg.From);
-  print(msg.Data);
-  print(msg.Tags);
 end)
 
 
@@ -112,10 +110,7 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
         Sender = msg.Tags.Sender,
         Recipient = msg.Tags.Recipient,
         Quantity = msg.Tags.Quantity,
-        Data = Colors.gray ..
-            msg.Tags.Sender .. " transferred " ..
-            Colors.blue ..
-            msg.Tags.Quantity .. Colors.gray .. " to " .. Colors.green .. msg.Tags.Recipient .. Colors.reset
+        Data = msg.Tags.Sender .. " transferred " .. msg.Tags.Quantity .. " to " .. msg.Tags.Recipient
       }
 
       for tagName, tagValue in pairs(msg) do
@@ -140,15 +135,14 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
   assert(bint(0) < bint(msg.Tags.Quantity), 'Quantity must be greater than zero!')
 
   if not Balances[ao.id] then Balances[ao.id] = "0" end
-  
-  if msg.From == ao.id or msg.From== Owner then
-    -- Add tokens to the token pool, according to Quantity
+
+  if msg.From == ao.id or msg.From == Owner then
     if not Balances[msg.Tags.Recipient] then Balances[msg.Tags.Recipient] = "0" end
     Balances[msg.Tags.Recipient] = utils.add(Balances[msg.Tags.Recipient], msg.Tags.Quantity)
     TotalSupply = utils.add(TotalSupply, msg.Tags.Quantity)
     ao.send({
       Target = ao.id,
-      Data = Colors.gray .. "Successfully minted " .. Colors.blue .. msg.Tags.Recipient .. msg.Tags.Quantity .. Colors.reset
+      Data = "Successfully minted " .. msg.Tags.Quantity .. " for " .. msg.Tags.Recipient
     })
   else
     ao.send({
@@ -182,7 +176,6 @@ Handlers.add('burn', Handlers.utils.hasMatchingTag('Action', 'Burn'), function(m
 
   ao.send({
     Target = ao.id,
-    Data = Colors.gray .. "Successfully burned " .. Colors.blue .. msg.Tags.TargetUser .. msg.Tags.Quantity .. Colors.reset
+    Data = "Successfully burned " .. msg.Tags.Quantity .. ' from ' .. msg.Tags.TargetUser
   })
 end)
-

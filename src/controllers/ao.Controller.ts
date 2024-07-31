@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { BasicAuthGuard } from 'src/config/basicStrategy';
 import { AOService } from 'src/services/ao.service';
 import { DripService } from 'src/services/drip.service';
 import { DripBurn } from 'src/vo/drip.burn';
@@ -8,6 +9,7 @@ import { DripTransfer } from 'src/vo/drip.transfer';
 
 @ApiTags('ao')
 @Controller("api/ao")
+@UseGuards(BasicAuthGuard)
 export class AOController {
 
   constructor(private readonly aoService: AOService, private readonly dripService: DripService) { }
