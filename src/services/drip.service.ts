@@ -11,7 +11,6 @@ export class DripService {
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
     ];
-    console.info(tags);
     return this.aoService.sendMsg(tags)
   }
 
@@ -21,7 +20,6 @@ export class DripService {
       { name: "TargetUser", value: targetUser.trim()},
       { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
     ];
-    console.info(tags);
     return this.aoService.sendMsg(tags)
   }
 
@@ -33,7 +31,6 @@ export class DripService {
       { name: "Quantity", value: (amount * Math.pow(10, 6)).toString() },
     ];
     return this.aoService.sendMsg(tags)
-    // return this.aoService.dryRunByTags(tags)
   }
 
   public async balance(recipient: string) {

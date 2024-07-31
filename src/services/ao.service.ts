@@ -37,7 +37,6 @@ export class AOService {
     return this.signer;
   }
   
-
   // https://cookbook_ao.g8way.io/zh/guides/aoconnect/sending-messages.html
   public async sendMsg(tags?:{
     name: string;
@@ -52,6 +51,7 @@ export class AOService {
         signer: signer,
         data: params || "",
       });
+      console.info(tags,params);
       console.info(resp);
       return resp;
     } catch (error) {

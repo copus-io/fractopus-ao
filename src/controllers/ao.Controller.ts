@@ -28,7 +28,6 @@ export class AOController {
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async mintDrip(@Body() req: DripMint): Promise<string> {
     const resp = await this.dripService.mintDrip(req.recipient, req.amount);
-    console.info(resp);
     return resp;
   }
 
