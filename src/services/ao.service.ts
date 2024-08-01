@@ -52,6 +52,8 @@ export class AOService {
     name: string;
     value: any;
 }[], params?: string): Promise<string> {
+
+  console.info("sendMsg tags",tags,params);
     try {
       const signer = await this.getSigner();
       const config = await this.loadConfig();
@@ -61,7 +63,7 @@ export class AOService {
         signer: signer,
         data: params || "",
       });
-      console.info("sendMsg",tags,params,resp);
+      console.info("sendMsg resp",resp);
       return resp;
     } catch (error) {
       console.error('Error sending message:', error);

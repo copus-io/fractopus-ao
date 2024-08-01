@@ -26,6 +26,9 @@ importers:
       '@permaweb/aoconnect':
         specifier: ^0.0.56
         version: 0.0.56
+      decimal.js:
+        specifier: ^10.4.3
+        version: 10.4.3
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -1219,6 +1222,9 @@ packages:
     peerDependenciesMeta:
       supports-color:
         optional: true
+
+  decimal.js@10.4.3:
+    resolution: {integrity: sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==}
 
   dedent@1.5.3:
     resolution: {integrity: sha512-NHQtfOOW68WD8lgypbLA5oT+Bt0xXJhiYvoR6SmmNXZfpzOGXwdKWmcwG8N7PwVVWV3eF/68nmD9BaJSsTBhyQ==}
@@ -4296,6 +4302,8 @@ snapshots:
   debug@4.3.5:
     dependencies:
       ms: 2.1.2
+
+  decimal.js@10.4.3: {}
 
   dedent@1.5.3: {}
 

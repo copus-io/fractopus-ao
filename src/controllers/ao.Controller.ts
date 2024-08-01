@@ -24,7 +24,6 @@ export class AOController {
   @Post("mintDrip")
   @ApiOperation({ summary: 'mintDrip', description: 'Returns mintDrip msgId' })
   @ApiBody({ type: DripMint })
-  @ApiQuery({ name: 'amount', required: false, description: 'amount' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async mintDrip(@Body() req: DripMint): Promise<string> {
     const resp = await this.dripService.mintDrip(req.recipient, req.amount);

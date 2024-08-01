@@ -26,6 +26,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.4.0",
     "@permaweb/aoconnect": "^0.0.56",
+    "decimal.js": "^10.4.3",
     "passport": "^0.7.0",
     "passport-http": "^0.3.0",
     "reflect-metadata": "^0.2.0",

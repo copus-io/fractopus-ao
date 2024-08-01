@@ -134,8 +134,6 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
   assert(type(msg.Tags.Quantity) == 'string', 'Quantity is required!')
   assert(bint(0) < bint(msg.Tags.Quantity), 'Quantity must be greater than zero!')
 
-  if not Balances[ao.id] then Balances[ao.id] = "0" end
-
   if msg.From == ao.id or msg.From == Owner then
     if not Balances[msg.Tags.Recipient] then Balances[msg.Tags.Recipient] = "0" end
     Balances[msg.Tags.Recipient] = utils.add(Balances[msg.Tags.Recipient], msg.Tags.Quantity)
