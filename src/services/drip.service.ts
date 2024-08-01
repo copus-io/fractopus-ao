@@ -9,7 +9,7 @@ export class DripService {
   constructor(private readonly aoService: AOService) { }
 
   private getFinalAmount(amount:number):string{
-    return (new Decimal(amount)).times(this.decimal).toString();
+    return (new Decimal(amount)).times(this.decimal).toFixed(0).toString();
   }
 
   public async mintDrip(recipient: string, amount: number) {
