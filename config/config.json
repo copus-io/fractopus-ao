@@ -1,7 +1,7 @@
 {
   "walletPath":"./aoconfig/wallet.json",
   "process": {
-    "tokenDrip": "RQ4ayxRZGySAk474UKuyZVMh3qYWInDlVzeGiA2BjC0" 
+    "tokenDrip": "Mouphc6jZ-yaA8n2MwXYTPIkLWel5o7ifNTIFMnCW8E" 
   },
   "admin":{
     "username":"adminAO",

@@ -32,8 +32,10 @@ https://github.com/permaweb/aos/blob/main/blueprints/token.lua
 https://cookbook_ao.g8way.io/zh/references/editor-setup.html
 
 ## drip测试进程
-dripTest9:RQ4ayxRZGySAk474UKuyZVMh3qYWInDlVzeGiA2BjC0 本地
-dripTest8:U6_HvThVlHa4Y3Fm7tm_vkXW5JfB61zZbYavLAehTC4
+
+dripTest9:Mouphc6jZ-yaA8n2MwXYTPIkLWel5o7ifNTIFMnCW8E
+
+dripTestMint:RQ4ayxRZGySAk474UKuyZVMh3qYWInDlVzeGiA2BjC0 本地
 
 舍弃的：
 dripTest4:mxifx0SNp62TQqDZMmodOgM0oK9NdaYufaGkO_WE4E0
