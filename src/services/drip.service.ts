@@ -4,11 +4,11 @@ import { AOService } from "./ao.service";
 @Injectable()
 export class DripService {
 
-  private decimal = Math.pow(10,6);
+  private decimal = Math.pow(10, 6);
 
   constructor(private readonly aoService: AOService) { }
 
-  private getFinalAmount(amount:number):string{
+  private getFinalAmount(amount: number): string {
     return (new Decimal(amount)).times(this.decimal).toFixed(0).toString();
   }
 
@@ -18,26 +18,55 @@ export class DripService {
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: this.getFinalAmount(amount) },
     ];
-    return this.aoService.sendMsg(tags)
+    const msgId = await this.aoService.sendMsg(tags);
+    return this.checkMsgId(msgId);
   }
 
   public async burnDrip(targetUser: string, amount: number) {
     const tags = [
       { name: "Action", value: "Burn" },
-      { name: "TargetUser", value: targetUser.trim()},
+      { name: "TargetUser", value: targetUser.trim() },
       { name: "Quantity", value: this.getFinalAmount(amount) },
     ];
-    return this.aoService.sendMsg(tags)
+    const msgId = await this.aoService.sendMsg(tags);
+    return this.checkMsgId(msgId);
   }
 
-  public async transferDrip(sender: string,recipient: string, amount: number) {
+  private async checkMsgId(msgId: string): Promise<string> {
+    const msg = await this.aoService.readMsg(msgId);
+    if (msg === null) {
+      return null;
+    }
+
+    if (msg.Messages.length === 0) {
+      return null;
+    }
+    
+    const msgTags = msg.Messages[0].Tags as Array<any>;
+
+    for (let index = 0; index < msgTags.length; index++) {
+      const element = msgTags[index];
+      if (element.name === "Error") {
+        console.info(element);
+        return null;
+      }
+      if (element.name === "Action" && (element.value as string).indexOf("Error") > 0) {
+        console.info(element);
+        return null;
+      }
+    }
+    return msgId;
+  }
+
+  public async transferDrip(sender: string, recipient: string, amount: number) {
     const tags = [
       { name: "Action", value: "Transfer" },
       { name: "Sender", value: sender },
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: this.getFinalAmount(amount) },
     ];
-    return this.aoService.sendMsg(tags)
+    const msgId = await this.aoService.sendMsg(tags);
+    return this.checkMsgId(msgId);
   }
 
   public async balance(recipient: string) {

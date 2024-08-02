@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AOService } from 'src/services/ao.service';
 import { DripService } from 'src/services/drip.service';
@@ -18,6 +18,9 @@ export class AOController {
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async transferDrip(@Body() req: DripTransfer): Promise<string> {
     const resp = await this.dripService.transferDrip(req.sender, req.recipient, req.amount);
+    if (resp === null) {
+      throw new HttpException('failed', HttpStatus.BAD_REQUEST);
+    }
     return resp;
   }
 
@@ -27,6 +30,9 @@ export class AOController {
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async mintDrip(@Body() req: DripMint): Promise<string> {
     const resp = await this.dripService.mintDrip(req.recipient, req.amount);
+    if (resp === null) {
+      throw new HttpException('failed', HttpStatus.BAD_REQUEST);
+    }
     return resp;
   }
 
@@ -36,6 +42,9 @@ export class AOController {
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async burnDrip(@Body() req: DripBurn): Promise<string> {
     const resp = await this.dripService.burnDrip(req.targetUser, req.amount);
+    if (resp === null) {
+      throw new HttpException('failed', HttpStatus.BAD_REQUEST);
+    }
     return resp;
   }
 
@@ -45,8 +54,7 @@ export class AOController {
   @ApiQuery({ name: 'messageId', required: false, description: 'messageId' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async readMsg(@Query('messageId') messageId: string): Promise<string> {
-    const resp = await this.aoService.readMsg(messageId);
-    return resp;
+    return this.aoService.readMsg(messageId);
   }
 
   @Get("balanceOfUser")
@@ -54,8 +62,7 @@ export class AOController {
   @ApiQuery({ name: 'userUUID', required: false, description: 'user uuid' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async balanceOfUser(@Query('userUUID') userUUID: string): Promise<string> {
-    const resp = await this.dripService.balance(userUUID);
-    return resp;
+    return  this.dripService.balance(userUUID);
   }
 
 
@@ -64,7 +71,6 @@ export class AOController {
   @ApiQuery({ name: 'action', required: false, description: 'action' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async readMsgByDryRun(@Query('action') action: string): Promise<string> {
-    const resp = await this.aoService.dryRun(action);
-    return resp;
+    return this.aoService.dryRun(action);
   }
 }
