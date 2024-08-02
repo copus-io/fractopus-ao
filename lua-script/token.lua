@@ -105,7 +105,7 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
 
     if not msg.Cast then
       local debitNotice = {
-        Target = msg.From,
+        Target = msg.Tags.Recipient,
         Action = 'Transfer-Success',
         Sender = msg.Tags.Sender,
         Recipient = msg.Tags.Recipient,
@@ -139,7 +139,7 @@ Handlers.add('mint', Handlers.utils.hasMatchingTag('Action', 'Mint'), function(m
     Balances[msg.Tags.Recipient] = utils.add(Balances[msg.Tags.Recipient], msg.Tags.Quantity)
     TotalSupply = utils.add(TotalSupply, msg.Tags.Quantity)
     ao.send({
-      Target = ao.id,
+      Target = msg.Tags.Recipient,
       Action = "Mint-Success",
       Recipient = msg.Tags.Recipient,
       Quantity = msg.Tags.Quantity,
@@ -176,7 +176,7 @@ Handlers.add('burn', Handlers.utils.hasMatchingTag('Action', 'Burn'), function(m
   TotalSupply = utils.subtract(TotalSupply, msg.Tags.Quantity)
 
   ao.send({
-    Target = ao.id,
+    Target = msg.Tags.TargetUser,
     Action = "Burn-Success",
     TargetUser = msg.Tags.TargetUser,
     Quantity = msg.Tags.Quantity,
