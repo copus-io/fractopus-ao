@@ -104,38 +104,37 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
     Balances[msg.Tags.Recipient] = utils.add(Balances[msg.Tags.Recipient], msg.Tags.Quantity)
 
     if not msg.Cast then
+      -- Debit-Notice message template, that is sent to the Sender of the transfer
       local debitNotice = {
-        Target = msg.Tags.Recipient,
-        Action = 'Transfer-Success',
+        Target = msg.Tags.Sender,
+        Action = 'Debit-Notice',
         Sender = msg.Tags.Sender,
         Recipient = msg.Tags.Recipient,
         Quantity = msg.Tags.Quantity,
-        Data = msg.Tags.Sender .. " transferred " .. msg.Tags.Quantity .. " to You"
+        Data = "You transferred " .. msg.Tags.Quantity .. " to " ..  msg.Tags.Recipient 
       }
 
+      -- Credit-Notice message template, that is sent to the Recipient of the transfer
+      local creditNotice = {
+        Target = msg.Tags.Recipient,
+        Action = 'Credit-Notice',
+        Sender = msg.Tags.Sender,
+        Quantity =  msg.Tags.Quantity,
+        Recipient = msg.Tags.Recipient,
+        Data = "You received " ..  msg.Tags.Quantity .. " from " .. msg.Tags.Sender 
+      }
+
+      -- Add forwarded tags to the credit and debit notice messages
       for tagName, tagValue in pairs(msg) do
+        -- Tags beginning with "X-" are forwarded
         if string.sub(tagName, 1, 2) == "X-" then
           debitNotice[tagName] = tagValue
+          creditNotice[tagName] = tagValue
         end
       end
+      -- Send Debit-Notice and Credit-Notice
       ao.send(debitNotice)
-
-      local debitNotice2 = {
-        Target = msg.Tags.Sender,
-        Action = 'Transfer-Success',
-        Sender = msg.Tags.Sender,
-        Recipient = msg.Tags.Recipient,
-        Quantity = msg.Tags.Quantity,
-        Data = "You transferred " .. msg.Tags.Quantity .. " to " .. msg.Tags.Recipient
-      }
-
-      for tagName, tagValue in pairs(msg) do
-        if string.sub(tagName, 1, 2) == "X-" then
-          debitNotice2[tagName] = tagValue
-        end
-      end
-      ao.send(debitNotice2)
-
+      ao.send(creditNotice)
     end
   else
     ao.send({
