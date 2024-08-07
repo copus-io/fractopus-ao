@@ -110,7 +110,7 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
         Sender = msg.Tags.Sender,
         Recipient = msg.Tags.Recipient,
         Quantity = msg.Tags.Quantity,
-        Data = msg.Tags.Sender .. " transferred " .. msg.Tags.Quantity .. " to " .. msg.Tags.Recipient
+        Data = msg.Tags.Sender .. " transferred " .. msg.Tags.Quantity .. " to You"
       }
 
       for tagName, tagValue in pairs(msg) do
@@ -119,6 +119,23 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
         end
       end
       ao.send(debitNotice)
+
+      local debitNotice2 = {
+        Target = msg.Tags.Sender,
+        Action = 'Transfer-Success',
+        Sender = msg.Tags.Sender,
+        Recipient = msg.Tags.Recipient,
+        Quantity = msg.Tags.Quantity,
+        Data = "You transferred " .. msg.Tags.Quantity .. " to " .. msg.Tags.Recipient
+      }
+
+      for tagName, tagValue in pairs(msg) do
+        if string.sub(tagName, 1, 2) == "X-" then
+          debitNotice2[tagName] = tagValue
+        end
+      end
+      ao.send(debitNotice2)
+
     end
   else
     ao.send({
