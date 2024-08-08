@@ -1,13 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import Decimal from 'decimal.js';
 import { AOService } from "./ao.service";
+import { CommonService } from "./common.service";
 @Injectable()
 export class DripService {
 
   private decimal = Math.pow(10, 6);
+ 
+  
+  constructor(private readonly aoService: AOService,
+    private readonly commonService: CommonService
+  ) { }
 
-  constructor(private readonly aoService: AOService) { }
-
+  private config :any| null = null;
+  async onModuleInit() {
+    this.config = await this.commonService.getConfigFromJson();
+    console.info(this.config);
+  }
+  
   private getFinalAmount(amount: number): string {
     return (new Decimal(amount)).times(this.decimal).toFixed(0).toString();
   }
@@ -18,7 +28,7 @@ export class DripService {
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: this.getFinalAmount(amount) },
     ];
-    const msgId = await this.aoService.sendMsg(tags);
+    const msgId = await this.aoService.sendMsg(this.config.process.tokenDrip, tags);
     return this.checkMsgId(msgId);
   }
 
@@ -28,12 +38,12 @@ export class DripService {
       { name: "TargetUser", value: targetUser.trim() },
       { name: "Quantity", value: this.getFinalAmount(amount) },
     ];
-    const msgId = await this.aoService.sendMsg(tags);
+    const msgId = await this.aoService.sendMsg(this.config.process.tokenDrip,tags);
     return this.checkMsgId(msgId);
   }
 
   private async checkMsgId(msgId: string): Promise<string> {
-    const msg = await this.aoService.readMsg(msgId);
+    const msg = await this.aoService.readMsg(this.config.process.tokenDrip,msgId);
     if (msg === null) {
       return null;
     }
@@ -41,7 +51,7 @@ export class DripService {
     if (msg.Messages.length === 0) {
       return null;
     }
-    
+
     const msgTags = msg.Messages[0].Tags as Array<any>;
 
     for (let index = 0; index < msgTags.length; index++) {
@@ -65,7 +75,7 @@ export class DripService {
       { name: "Recipient", value: recipient },
       { name: "Quantity", value: this.getFinalAmount(amount) },
     ];
-    const msgId = await this.aoService.sendMsg(tags);
+    const msgId = await this.aoService.sendMsg(this.config.process.tokenDrip,tags);
     return this.checkMsgId(msgId);
   }
 
@@ -74,6 +84,6 @@ export class DripService {
       { name: "Action", value: "Balance" },
       { name: "Recipient", value: recipient },
     ];
-    return this.aoService.dryRunByTags(tags)
+    return this.aoService.dryRunByTags(this.config.process.tokenDrip,tags)
   }
 }

@@ -1,6 +1,7 @@
 {
   "walletPath":"./aoconfig/wallet.json",
   "process": {
-    "tokenDrip": "OP3VAF8IrqGWsUaiz1h5CpQmvKZ2UJ6p2W_ZyBqjaV8" 
+    "tokenDrip": "OP3VAF8IrqGWsUaiz1h5CpQmvKZ2UJ6p2W_ZyBqjaV8",
+    "fractopus": "RIhD5-AwoDDgZNbtEwcrfIo0z74FP-oyNLLh9lEI9h4" 
   }
 }

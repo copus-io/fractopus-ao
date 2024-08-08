@@ -37,6 +37,4 @@ dripTest9:Mouphc6jZ-yaA8n2MwXYTPIkLWel5o7ifNTIFMnCW8E
 
 dripTestMint:RQ4ayxRZGySAk474UKuyZVMh3qYWInDlVzeGiA2BjC0 本地
 
-舍弃的：
-dripTest4:mxifx0SNp62TQqDZMmodOgM0oK9NdaYufaGkO_WE4E0
-dripTest2:dpoMmQnp2wXTbNZmAty7X1R1xOlD4RvIjRwXF6qnpm0
+fractopusTest1: RIhD5-AwoDDgZNbtEwcrfIo0z74FP-oyNLLh9lEI9h4

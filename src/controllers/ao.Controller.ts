@@ -2,15 +2,20 @@ import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AOService } from 'src/services/ao.service';
 import { DripService } from 'src/services/drip.service';
+import { FractopusService } from 'src/services/fractopus.service';
 import { DripBurn } from 'src/vo/drip.burn';
 import { DripMint } from 'src/vo/drip.mint';
 import { DripTransfer } from 'src/vo/drip.transfer';
+import { FractopusSave } from 'src/vo/fractopus.save';
 
 @ApiTags('ao')
 @Controller("api/ao")
 export class AOController {
 
-  constructor(private readonly aoService: AOService, private readonly dripService: DripService) { }
+  constructor(
+    private readonly aoService: AOService,
+    private readonly fractopusService: FractopusService,
+    private readonly dripService: DripService) { }
 
   @Post("transferDrip")
   @ApiOperation({ summary: 'dripTransfer', description: 'Returns dripTransfer msgId' })
@@ -48,29 +53,64 @@ export class AOController {
     return resp;
   }
 
-
-  @Get("readMsg")
-  @ApiOperation({ summary: 'readMsg', description: 'Returns msg' })
-  @ApiQuery({ name: 'messageId', required: false, description: 'messageId' })
-  @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async readMsg(@Query('messageId') messageId: string): Promise<string> {
-    return this.aoService.readMsg(messageId);
-  }
-
   @Get("balanceOfUser")
   @ApiOperation({ summary: 'balanceOfUser', description: 'Returns msg' })
   @ApiQuery({ name: 'userUUID', required: false, description: 'user uuid' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async balanceOfUser(@Query('userUUID') userUUID: string): Promise<string> {
-    return  this.dripService.balance(userUUID);
+    return this.dripService.balance(userUUID);
   }
 
 
-  @Get("readMsgByDryRun")
-  @ApiOperation({ summary: 'readMsgByDryRun', description: 'Returns msg by dryrun action' })
-  @ApiQuery({ name: 'action', required: false, description: 'action' })
+  @Post("saveFractopus")
+  @ApiOperation({ summary: 'saveFractopus', description: 'Returns saveFractopus msgId' })
+  @ApiBody({ type: FractopusSave })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
-  public async readMsgByDryRun(@Query('action') action: string): Promise<string> {
-    return this.aoService.dryRun(action);
+  public async saveFractopus(@Body() req: FractopusSave): Promise<string> {
+    if (!req.uri || req.uri.trim() === "") {
+      throw new HttpException('wrong uri', HttpStatus.BAD_REQUEST);
+    }
+    if (req.src) {
+      let totalShr = 0;
+      req.src.forEach((item, _) => {
+        if (!item.shr || item.shr < 0 || item.shr > 1) {
+          throw new HttpException('wrong item shr', HttpStatus.BAD_REQUEST);
+        }
+        if (!item.uri || item.uri.trim() === "") {
+          throw new HttpException('wrong item uri', HttpStatus.BAD_REQUEST);
+        }
+        totalShr += item.shr;
+      });
+      if (totalShr < 0 || totalShr > 1) {
+        throw new HttpException('wrong shrs', HttpStatus.BAD_REQUEST);
+      }
+    }
+
+    const resp = await this.fractopusService.saveFractopus(req);
+    if (resp === null) {
+      throw new HttpException('failed', HttpStatus.BAD_REQUEST);
+    }
+    return resp;
   }
+
+  @Get("getFractopus")
+  @ApiOperation({ summary: 'getFractopus', description: 'Returns msg' })
+  @ApiQuery({ name: 'uri', required: false, description: 'uri' })
+  @ApiResponse({ status: 200, description: 'Successful response', type: Array })
+  public async getFractopus(@Query('uri') uri: string): Promise<any> {
+    if (uri === null || uri.trim() === "") {
+      throw new HttpException('wrong uri', HttpStatus.BAD_REQUEST);
+    }
+    const src = await this.fractopusService.getFractopus(uri);
+    console.info(src);
+    if (src === null) {
+      throw new HttpException('failed', HttpStatus.BAD_REQUEST);
+    }
+    return {src:src};
+  }
+
+
+
+ 
+
 }
