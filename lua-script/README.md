@@ -31,6 +31,12 @@ https://github.com/permaweb/aos/blob/main/blueprints/token.lua
 ## 编辑器设置
 https://cookbook_ao.g8way.io/zh/references/editor-setup.html
 
+
+## drip生产
+Drip OxkBgIWTT2QpKBvqFGw5UY_igXIZqxH_6JdWAxmooN8
+Fractopus PLL-dMWmKy8Yvz5daC3Aqyj_WaOIHsPOFMq0rePKANc
+
+
 ## drip测试进程
 
 dripTest9:Mouphc6jZ-yaA8n2MwXYTPIkLWel5o7ifNTIFMnCW8E
