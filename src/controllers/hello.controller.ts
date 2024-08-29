@@ -15,7 +15,7 @@ export class HelloController {
   @ApiOperation({ summary: 'getUrlHeader', description: 'getUrlHeader' })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   @ApiQuery({ name: 'url', required: false, description: 'url' })
-  async getUrlHeader(@Query('url') url?: string):  Promise<Record<string, string>> {
+  async getUrlHeader(@Query('url') url?: string):  Promise<Record<string, any>> {
     return await this.urlService.scrapePage(url);
   }
 }

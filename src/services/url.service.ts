@@ -3,34 +3,32 @@ import * as puppeteer from 'puppeteer';
 
 @Injectable()
 export class UrlService {
-  
-  public async scrapePage(url: string):  Promise<Record<string, string>> {
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
 
-    await page.goto(url, {
-      waitUntil: 'networkidle2',
+
+  private browser: puppeteer.Browser;
+  private page: puppeteer.Page;
+
+  public async scrapePage(url: string): Promise<Record<string, any>> {
+    if (!this.browser) {
+      this.browser = await puppeteer.launch();
+      this.page = await this.browser.newPage();
+    }
+    await this.page.goto(url, { waitUntil: 'networkidle2' });
+    const data = await this.page.evaluate(() => {
+      const title = document.querySelector('title')?.textContent || '';
+      const description = document.querySelector('meta[name="description"]')?.getAttribute('content') || '';
+      const ogImage = document.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
+      const twitterTitle = document.querySelector('meta[name="twitter:title"]')?.getAttribute('content') || '';
+      const metaTags = Array.from(document.getElementsByTagName('meta')).map(meta => {
+        const name = meta.getAttribute('name') || meta.getAttribute('property') || meta.getAttribute('http-equiv') || '';
+        const content = meta.getAttribute('content') || '';
+        return { name, content };
+      });
+
+      return { title, description, ogImage, twitterTitle, metaTags };
     });
-
-    const title = await page.title();
-    console.info(title);
-
-    const metaInfo = await page.evaluate(() => {
-      const metas = document.getElementsByTagName('meta');
-      const metaMap: Record<string, string> = {};
-
-
-      for (let i = 0; i < metas.length; i++) {
-        const name = metas[i].getAttribute('name') || metas[i].getAttribute('property');
-        const content = metas[i].getAttribute('content');
-        if (name && content) {
-          metaMap[name] = content;
-        }
-      }
-      return metaMap;
-    });
-    await browser.close();
-    console.info(metaInfo);
-    return metaInfo;
+    return data;
   }
+
+
 }
