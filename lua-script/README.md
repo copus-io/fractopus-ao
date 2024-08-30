@@ -8,6 +8,9 @@ https://cookbook_ao.g8way.io/
 ## 中文文档
 https://cookbook_ao.g8way.io/zh/index.html
 
+## AO的2.0升级
+https://mp.weixin.qq.com/s/9jqWJmfqi3xBsM_POJiQBA
+
 ## sqlite的支持
 https://github.com/permaweb/aos-sqlite
 
@@ -22,6 +25,8 @@ https://www.npmjs.com/package/@permaweb/aoconnect
 ## 创建进程
 https://cookbook_ao.g8way.io/zh/welcome/getting-started.html
 通过 aos --wallet 钱包的私钥json fractopus 创建了一个新的    71ivTXF52qh2n0cllK1RkgeWWPu3FNr9MTJ-QnhGmTE 进程
+
+
 
 https://www.ao.link/entity/71ivTXF52qh2n0cllK1RkgeWWPu3FNr9MTJ-QnhGmTE
 
