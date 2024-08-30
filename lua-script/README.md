@@ -44,7 +44,7 @@ Fractopus PLL-dMWmKy8Yvz5daC3Aqyj_WaOIHsPOFMq0rePKANc
 
 ## drip测试进程
 
-dripTest9:Mouphc6jZ-yaA8n2MwXYTPIkLWel5o7ifNTIFMnCW8E
+dripTest8:U6_HvThVlHa4Y3Fm7tm_vkXW5JfB61zZbYavLAehTC4 2024年8月30日 15:16:25 ao升级2.0
 
 dripTestMint:RQ4ayxRZGySAk474UKuyZVMh3qYWInDlVzeGiA2BjC0 本地
 
