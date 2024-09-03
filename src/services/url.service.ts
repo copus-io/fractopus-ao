@@ -4,7 +4,6 @@ import * as puppeteer from 'puppeteer';
 @Injectable()
 export class UrlService {
 
-
   private browser: puppeteer.Browser;
   private page: puppeteer.Page;
 
@@ -18,17 +17,14 @@ export class UrlService {
       const title = document.querySelector('title')?.textContent || '';
       const description = document.querySelector('meta[name="description"]')?.getAttribute('content') || '';
       const ogImage = document.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
-      const twitterTitle = document.querySelector('meta[name="twitter:title"]')?.getAttribute('content') || '';
       const metaTags = Array.from(document.getElementsByTagName('meta')).map(meta => {
         const name = meta.getAttribute('name') || meta.getAttribute('property') || meta.getAttribute('http-equiv') || '';
         const content = meta.getAttribute('content') || '';
         return { name, content };
       });
-
-      return { title, description, ogImage, twitterTitle, metaTags };
+      return { title, description, ogImage, metaTags };
     });
     return data;
   }
-
 
 }

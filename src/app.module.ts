@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { WhitelistMiddleware } from './config/config';
 import { AOController } from './controllers/ao.controller';
-import { HelloController } from './controllers/hello.controller';
+import { UrlController } from './controllers/url.controller';
 import { AOService } from './services/ao.service';
 import { CommonService } from './services/common.service';
 import { DripService } from './services/drip.service';
@@ -12,7 +12,7 @@ import { UrlService } from './services/url.service';
   imports: [],
   controllers: [
     AOController,
-    HelloController
+    UrlController
   ],
   providers: [
     DripService,

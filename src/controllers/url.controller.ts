@@ -2,9 +2,9 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UrlService } from 'src/services/url.service';
 
-@ApiTags('test')
+@ApiTags('scrapePage')
 @Controller("api/v1")
-export class HelloController {
+export class UrlController {
 
   constructor(
     private readonly urlService: UrlService
