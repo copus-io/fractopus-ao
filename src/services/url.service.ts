@@ -13,6 +13,10 @@ export class UrlService {
       this.page = await this.browser.newPage();
     }
     await this.page.goto(url, { waitUntil: 'networkidle2' });
+    await this.page.waitForFunction(() => {
+      return document.readyState === 'complete';
+    }, { timeout: 10000 });
+
     const data = await this.page.evaluate(() => {
       const title = document.querySelector('title')?.textContent || '';
       const description = document.querySelector('meta[name="description"]')?.getAttribute('content') || '';
