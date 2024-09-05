@@ -2,10 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { FractopusSave } from "src/vo/fractopus.save";
 import { AOService } from "./ao.service";
 import { CommonService } from "./common.service";
+import { ZeroGService } from "./zerog.service";
 @Injectable()
 export class FractopusService  {
 
-  constructor(private readonly aoService: AOService,
+  constructor(
+    private readonly aoService: AOService,
+    private readonly zeroGService: ZeroGService,
     private readonly commonService: CommonService
   ) { }
 
@@ -27,6 +30,11 @@ export class FractopusService  {
     }
     const msgId = await this.aoService.sendMsg(this.config.process.fractopus,tags)
     return this.checkMsgId(msgId);
+  }
+
+  
+  public async saveFractopusTo0G(req: FractopusSave): Promise<any> {
+    return  await this.zeroGService.sendMsg(req);
   }
 
   public async getFractopus(req: string): Promise<string> {

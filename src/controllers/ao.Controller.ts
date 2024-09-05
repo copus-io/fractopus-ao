@@ -1,6 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AOService } from 'src/services/ao.service';
 import { DripService } from 'src/services/drip.service';
 import { FractopusService } from 'src/services/fractopus.service';
 import { DripBurn } from 'src/vo/drip.burn';
@@ -13,7 +12,6 @@ import { FractopusSave } from 'src/vo/fractopus.save';
 export class AOController {
 
   constructor(
-    private readonly aoService: AOService,
     private readonly fractopusService: FractopusService,
     private readonly dripService: DripService) { }
 
@@ -67,6 +65,15 @@ export class AOController {
   @ApiBody({ type: FractopusSave })
   @ApiResponse({ status: 200, description: 'Successful response', type: String })
   public async saveFractopus(@Body() req: FractopusSave): Promise<string> {
+    this.checkFractopusData(req);
+    const resp = await this.fractopusService.saveFractopus(req);
+    if (resp === null) {
+      throw new HttpException('failed', HttpStatus.BAD_REQUEST);
+    }
+    return resp;
+  }
+  
+  private checkFractopusData(req: FractopusSave){
     if (!req.uri || req.uri.trim() === "") {
       throw new HttpException('wrong uri', HttpStatus.BAD_REQUEST);
     }
@@ -85,12 +92,6 @@ export class AOController {
         throw new HttpException('wrong shrs', HttpStatus.BAD_REQUEST);
       }
     }
-
-    const resp = await this.fractopusService.saveFractopus(req);
-    if (resp === null) {
-      throw new HttpException('failed', HttpStatus.BAD_REQUEST);
-    }
-    return resp;
   }
 
   @Get("getFractopus")

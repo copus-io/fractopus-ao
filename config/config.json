@@ -1,5 +1,6 @@
 {
   "walletPath":"./aoconfig/wallet.json",
+  "privKeyForZeroG":"9f332950e0425fa0e5c8528ac2c9e3fcecb78713d6ca999efe0930d73230b91f",
   "process": {
     "tokenDrip": "U6_HvThVlHa4Y3Fm7tm_vkXW5JfB61zZbYavLAehTC4",
     "fractopus": "6Ffmien7vpLG4rPxFLw26nMDttjckByw1Vgu6OI3Blk" 

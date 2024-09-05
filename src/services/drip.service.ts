@@ -15,7 +15,6 @@ export class DripService {
   private config :any| null = null;
   async onModuleInit() {
     this.config = await this.commonService.getConfigFromJson();
-    console.info(this.config);
   }
   
   private getFinalAmount(amount: number): string {
