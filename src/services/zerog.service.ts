@@ -45,7 +45,7 @@ export class ZeroGService {
       return this.batcher;
     }
     const config = await this.commonService.getConfigFromJson();
-    const evmRpc = 'https://evmrpc-test-us.0g.ai';
+    const evmRpc = 'https://evmrpc-testnet.0g.ai';
     const privateKey = config.privKeyForZeroG;
     const flowAddr = "0x0460aA47b41a66694c0a73f667a1b795A5ED3556";
     const node = new StorageNode("http://35.84.189.77:5678")
